@@ -1,0 +1,3 @@
+module counter (clk, rst, CounterX, CounterY);
+
+endmodule
