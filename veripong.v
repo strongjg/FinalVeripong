@@ -3,23 +3,36 @@ input clk, rst, color, plot;
 input [9:0] X;
 input [9:0] Y;
 output VGA_CLK, VGA_HS, VGA_VS, VGABlank, VGASync;
-output reg [9:0] VGA_R;
-output reg [9:0] VGA_G;
-output reg [9:0] VGA_B;
+output [9:0] VGA_R;
+output [9:0] VGA_G;
+output [9:0] VGA_B;
 
 reg score;
 reg [12:0] S;
 reg [12:0] NS;
 
-wire BorderX;
-wire BorderY;
-wire CounterX;
-wire CounterY;
-counter count(clk, rst, CounterX, CounterY);
+wire [7:0] X1;
+wire [7:0] Y1;
+wire [2:0] color1;
 
-vga_adapter VGA(.resetn(1'b1), .clock(clk), .colour(3'b111), .x(9'd200), .y(8'd200), .plot(1'b1), .VGA_R(VGA_R), .VGA_G(VGA_G), .VGA_B(VGA_B), .VGA_HS(VGA_HS), .VGA_VS(VGA_VS), .VGA_BLANK(VGABlank), .VGA_SYNC(VGASync), .VGA_CLK(VGA_CLK));
+reg [7:0] CounterX;
+reg [7:0] CounterY;
 
-parameter BORDERDRAW = 8'd0,
+counter border(.clk(clk), .rst(rst), .CounterX(X1), .CounterY(Y1), .color(color1));
+
+always @(posedge clk)
+begin
+	CounterX <= X1;
+	CounterY <= Y1;
+end
+
+vga_adapter VGA(1'b1, clk, color1, CounterX, CounterY, 1'b1, VGA_R, VGA_G, VGA_B, VGA_HS, VGA_VS, VGABlank, VGASync, VGA_CLK);
+defparam VGA.BITS_PER_COLOUR_CHANNEL = 1'b1;
+defparam VGA.MONOCHROME = "FALSE";
+defparam VGA.RESOLUTION = "320x240";
+defparam VGA.BACKGROUND_IMAGE = "background.mif";
+
+/*parameter BORDERDRAW = 8'd0,
 		PADDLE1DRAW = 8'd1,
 		PADDLE2DRAW = 8'd2,
 		BALLDRAW = 8'd3,
@@ -41,7 +54,7 @@ always @(posedge clk or negedge rst)
 	end
 	else
 		S <= NS;
-		
+	
 always @(*)
 	case (S)
 		//Border FSM
@@ -68,6 +81,6 @@ always @(*)
 		//SCORE1ADD:
 		//SCORE2ADD:
 		//END:
-	endcase
+	endcase*/
 
 endmodule

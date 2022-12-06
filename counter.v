@@ -1,50 +1,33 @@
-module counter (clk, rst, CounterX, CounterY);
+module counter (clk, rst, CounterX, CounterY, color);
 input clk, rst;
-output reg CounterX, CounterY;
-reg X = 1'd0;
-reg Y = 1'd0;
+output reg [7:0] CounterX;
+output reg [7:0] CounterY;
+output reg [2:0] color;
 
-reg [4:0] S;
-reg [4:0] NS;
+integer X = 5;
+integer Y = 15;
 
-parameter XCOUNT = 1'd0,
-			 YCOUNT = 1'd1,
-			 XCOUNTER = 1'd2,
-			 YCOUNTER = 1'd3,
-			 DONE = 1'd4;
-			 
-always @(*)
-	case (S)
-		XCOUNT:
-		begin	
-			X = X + 1;
-			if (X >= 20 && X <= 300)
-				NS = XCOUNTER;
-			else if (X == 320)
-				NS = YCOUNT;
-			else
-				NS = XCOUNT;
-		end
-		XCOUNTER:
+always @(posedge clk)
+	begin
+		if (X < 105 && Y == 15)
 		begin
-			CounterX = CounterX + 1;
-			NS = XCOUNT;
+			X <= X + 1;
 		end
-		YCOUNT:
+		else if (X == 105 && Y < 115)
 		begin
-			Y = Y + 1;
-			if (Y >= 20 && Y <= 240)
-				NS = YCOUNTER;
-			else if (Y == 240)
-				NS = DONE;
-			else
-				NS = YCOUNT;
+			Y <= Y + 1;
 		end
-		YCOUNTER:
+		else if (X > 5 && Y == 115)
 		begin
-			CounterY = CounterY + 1;
-			NS = YCOUNT;
+			X <= X - 1;
 		end
-	endcase
+		else if (X == 5 && Y > 15)
+		begin
+			Y <= Y - 1;
+		end
+		CounterX <= X;
+		CounterY <= Y;
+		color <= 3'b010;
+	end
 
 endmodule

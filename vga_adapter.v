@@ -125,7 +125,7 @@ module vga_adapter(
 	/* The colour input can be either 1 bit or 3*BITS_PER_COLOUR_CHANNEL bits wide, depending on
 	 * the setting of the MONOCHROME parameter.
 	 */
-	input [((MONOCHROME == "FALSE") ? (0) : (BITS_PER_COLOUR_CHANNEL*3-1)):0] colour;
+	input [((MONOCHROME == "TRUE") ? (0) : (BITS_PER_COLOUR_CHANNEL*3-1)):0] colour;
 	
 	/* Specify the number of bits required to represent an (X,Y) coordinate on the screen for
 	 * a given resolution.
@@ -163,7 +163,7 @@ module vga_adapter(
 	 * the state of the plot signal.
 	 */
 	
-	wire [((MONOCHROME == "FALSE") ? (0) : (BITS_PER_COLOUR_CHANNEL*3-1)):0] to_ctrl_colour;
+	wire [((MONOCHROME == "TRUE") ? (0) : (BITS_PER_COLOUR_CHANNEL*3-1)):0] to_ctrl_colour;
 	/* Pixel colour read by the VGA controller */
 	
 	wire [((RESOLUTION == "320x240") ? (16) : (14)):0] user_to_video_memory_addr;
