@@ -1,0 +1,93 @@
+module baller (clk, rst, P1Up, P1Down, CounterX, CounterY, color);
+input clk, rst;
+input P1Up, P1Down;
+output reg [9:0] CounterX;
+output reg [8:0] CounterY;
+output reg [2:0] color;
+reg [2:0] color1;
+
+integer X = 5;
+integer Y = 140;
+
+reg [2:0] S;
+reg [2:0] NS;
+
+parameter INIT = 3'd0,
+			 MOVE = 3'd1;
+
+/*always @(posedge clk or negedge rst)
+	if (rst == 1'b0)
+		S <= INIT;
+	else
+	begin
+		S <= NS;
+		CounterX <= X;
+		CounterY <= Y;
+		color <= color1;
+	end
+
+always @(posedge clk)
+begin
+	if (X == 5 && Y >= 100)
+	begin
+		Y <= Y - 1;
+		color1 <= 3'b111;
+	end
+	else if (X == 5 && Y == 15)
+	begin	
+		X <= 15;
+		Y <= 40;
+	end
+end
+	/*case (S)
+		//MOVE:
+	endcase*/
+			
+always @(posedge clk)
+begin
+	if (X == 5 && Y >= 100)
+	begin
+		Y <= Y - 1;
+		color1 <= 3'b111;
+	end
+	else if (X == 5 && Y == 15)
+	begin	
+		X <= 15;
+		Y <= 40;
+	end
+	
+	if (P1Up == 1'b0)
+	begin
+		X <= 5;
+		Y <= 140;
+		//deletes the old paddle
+		if (X == 5 && Y >= 100)
+		begin
+			Y <= Y - 1;
+			color1 <= 3'b000;
+		end
+		Y <= 160;
+		if (X == 5 && Y >= 120)
+			begin
+				Y <= Y - 1;
+				color1 <= 3'b111;
+			end
+	end
+	if (P1Down == 1'b0)
+	begin
+		X <= 5;
+		Y <= 140;
+		//deletes the old paddle
+		if (X == 5 && Y >= 100)
+		begin
+			Y <= Y - 1;
+			color1 <= 3'b000;
+		end
+		Y <= 160;
+	end
+	CounterX <= X;
+	CounterY <= Y;
+	color <= color1;
+end
+
+endmodule

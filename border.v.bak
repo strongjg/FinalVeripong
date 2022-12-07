@@ -1,0 +1,33 @@
+module border (clk, rst, CounterX, CounterY, color);
+input clk, rst;
+output reg [7:0] CounterX;
+output reg [7:0] CounterY;
+output reg [2:0] color;
+
+integer X = 5;
+integer Y = 15;
+
+always @(posedge clk)
+	begin
+		if (X < 105 && Y == 15)
+		begin
+			X <= X + 1;
+		end
+		else if (X == 105 && Y < 115)
+		begin
+			Y <= Y + 1;
+		end
+		else if (X > 5 && Y == 115)
+		begin
+			X <= X - 1;
+		end
+		else if (X == 5 && Y > 15)
+		begin
+			Y <= Y - 1;
+		end
+		CounterX <= X;
+		CounterY <= Y;
+		color <= 3'b010;
+	end
+
+endmodule
