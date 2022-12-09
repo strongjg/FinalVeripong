@@ -10,17 +10,22 @@ integer X = 5;
 integer Y = 140;
 integer X1;
 integer Y1;
+integer add_subX;
+integer add_subY;
 integer paddle1Y = 140;
 integer paddle2Y = 140;
 integer ballX = 160;
 integer ballY = 120;
 
+reg enable = 1'b1;
 reg ballX_d = 1'b1;
 reg ballY_d = 1'b1;
 
 reg [2:0] start = 3'd0;
 reg en1 = 1'b0;
-reg en2;
+reg en2 = 1'b0;
+reg en3 = 1'b0;
+reg en4 = 1'b0;
 
 reg [4:0] S;
 reg [4:0] NS;
@@ -204,32 +209,44 @@ begin
 	
 	if (start == 3'd1)
 	begin
-		
-		ballX = ballX + 1;
-		//color1 <= 3'b000;
-		X <= ballX + 1;
+		if(enable == 1'b1)
+		begin
+		X <= ballX;
 		Y <= ballY;
-		color1 <= 3'b111;
-		if (ballX <= 315)
-		begin
-			ballX <= ballX + 1;
-		end
-		else if (ballX >= 0)
-		begin
-			ballX <= ballX - 1;
-		end
-		
-		if (ballY <= 240)
-		begin
-			ballY <= ballY + 1;
-		end
-		else if (ballY >= 0)
-		begin	
-			ballY <= ballY - 1;
+		color1 <= 3'b000;
+		enable <= 1'b0;
 		end
 	
+	
+		X <= ballX;
+		Y <= ballY;
+		if(ballX == 20)
+		begin
+		add_subX <= 1;
+		end
+		else if(ballX == 300)
+		begin
+		add_subX <= -1;
+		end
+		else if(ballY == 20)
+		begin
+		add_subY <= 1;
+		end
+		else if(ballY == 220)
+		begin
+		add_subY <= -1;
+		end
+		else
+		begin
+		ballX <= ballX + add_subX;
+		ballY <= ballY + add_subY;
+		end
+		ballX <= ballX + add_subX;
+		ballY <= ballY + add_subY;
+		color1 <= 3'b111;	
+		enable <= 1'b1;
 		
-		/*if (P1Up == 1'b0)
+		if (P1Up == 1'b0)
 		begin
 			X <= 5;
 			Y <= paddle1Y;
@@ -246,10 +263,10 @@ begin
 		if (P1Up == 1'b1 && en1 == 1'b1)
 		begin
 			X <= 5;
-			//Y <= paddle1Y;
-			paddle1Y <= 140;
+			Y <= paddle1Y;
+			paddle1Y <= 40;
 			//paddle1Y <= paddle1Y - 80;
-			if (X == 5 && Y >= 100)
+			if (X == 5 && Y >= 220)
 			begin
 				Y <= Y - 1;
 				color1 <= 3'b000;
@@ -260,37 +277,83 @@ begin
 		begin
 			X <= 5;
 			Y <= paddle1Y;
+			paddle1Y <= paddle1Y + 1;
 			if (X == 5 && paddle1Y <= (paddle1Y))
 			begin
-				paddle1Y <= paddle1Y - 1;
 				color1 <= 3'b000;
-			end
-			else if (X == 5 && paddle1Y >= (paddle1Y + 80))
-			begin
 				paddle1Y <= paddle1Y - 1;
-				color1 <= 3'b111;
+				en1 <= 1'b1;
+			end
+			//paddle1Y <= paddle1Y - 40;
+		end
+		
+		if (P1Down == 1'b1 && en2 == 1'b1)
+		begin
+			X <= 5;
+			//Y <= paddle1Y;
+			paddle1Y <= 140;
+			//paddle1Y <= paddle1Y - 80;
+			if (X == 5 && Y >= 100)
+			begin
+				Y <= Y - 1;
+				color1 <= 3'b000;
 			end
 		end
 				
 		if (P2Up == 1'b0)
 		begin
 			X <= 315;
-			Y <= paddle2Y + 1;
-			if (paddle2Y >= 240)
+			Y <= paddle2Y;
+			paddle2Y <= paddle2Y + 1;
+			if (X == 315 && paddle2Y <= (paddle2Y))
 			begin
-				Y <= paddle2Y + 0;
+				color1 <= 3'b000;
+				paddle2Y <= paddle2Y - 1;
+				en3 <= 1'b1;
 			end
+			//paddle2Y <= paddle2Y - 40;
 		end
-		else if (P2Down == 1'b0)
+		
+		if (P2Up == 1'b1 && en3 == 1'b1)
 		begin
 			X <= 315;
-			Y <= paddle2Y - 1;
-			if (paddle2Y <= 0)
+			Y <= paddle2Y;
+			paddle2Y <= 40;
+			//paddle2Y <= paddle2Y - 80;
+			if (X == 315 && Y >= 220)
 			begin
-				Y <= paddle2Y + 0;
+				Y <= Y - 1;
+				color1 <= 3'b000;
 			end
 		end
-	end
+		
+		if (P2Down == 1'b0)
+		begin
+			X <= 315;
+			Y <= paddle2Y;
+			paddle2Y <= paddle2Y + 1;
+			if (X == 5 && paddle2Y <= (paddle2Y))
+			begin
+				color1 <= 3'b000;
+				paddle2Y <= paddle2Y - 1;
+				en3 <= 1'b1;
+			end
+			//paddle2Y <= paddle2Y - 40;
+		end
+		
+		if (P2Down == 1'b1 && en4 == 1'b1)
+		begin
+			X <= 315;
+			//Y <= paddle2Y;
+			paddle2Y <= 140;
+			//paddle2Y <= paddle2Y - 80;
+			if (X == 315 && Y >= 100)
+			begin
+				Y <= Y - 1;
+				color1 <= 3'b000;
+			end
+		end
+	
 	
 	/*if (start == 3'd2)
 	begin

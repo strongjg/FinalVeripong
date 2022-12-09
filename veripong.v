@@ -1,4 +1,4 @@
-`timescale 1s / 1ps
+`timescale 1s / 1ns
 
 module veripong(clk, rst, color, X, Y, plot, VGA_CLK, VGA_HS, VGA_VS, VGABlank, VGASync, VGA_R, VGA_G, VGA_B, P1Up, P1Down, P2Up, P2Down);
 input clk, rst, color, plot;
