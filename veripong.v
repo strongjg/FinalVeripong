@@ -1,3 +1,5 @@
+`timescale 1s / 1ps
+
 module veripong(clk, rst, color, X, Y, plot, VGA_CLK, VGA_HS, VGA_VS, VGABlank, VGASync, VGA_R, VGA_G, VGA_B, P1Up, P1Down, P2Up, P2Down);
 input clk, rst, color, plot;
 input P1Up, P1Down, P2Up, P2Down;
@@ -22,7 +24,7 @@ wire [2:0] color2;
 reg [9:0] CounterX;
 reg [8:0] CounterY;
 
-border border1(.clk(clk), .rst(rst), .P1Up(P1Up), .P1Down(P1Down), .CounterX(X1), .CounterY(Y1), .color(color1));
+border border1(.clk(clk), .rst(rst), .P1Up(P1Up), .P1Down(P1Down), .P2Up(P2Up), .P2Down(P2Down), .CounterX(X1), .CounterY(Y1), .color(color1));
 
 always @(posedge clk)
 begin
@@ -36,12 +38,12 @@ defparam VGA.MONOCHROME = "FALSE";
 defparam VGA.RESOLUTION = "320x240";
 defparam VGA.BACKGROUND_IMAGE = "background.mif";
 
-parameter OBJECT_SIZE = 10,
+/*parameter OBJECT_SIZE = 10,
 		  BAR_X_SIZE = 60,
 		  BAR_Y_SIZE = 5,
 		  BAR_SPEED = 5,
 		  SCREEN_BOTTOM = 50;
-/*
+
 integer X1 = 20;
 integer Y1 = 20;
 always @(posedge clk)
